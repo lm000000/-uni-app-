@@ -1,0 +1,106 @@
+原生微信小程序总结
+  1.app.josn文件中    
+    pages属性就是指文件    那个文件在前面就先显示那个     创建文件的时候也可以直接复制一行  
+    在局部配置时  不用写什么window  直接写属性
+  2.页面    
+   用的是mustache语法       要现在index.js文件的data属性先定义  
+   属性写属性值也用mustache语法
+   view相当于div  他有一个hover-class属性   他的属性名相当于是class类
+
+            一般用的是px,rem,vm;
+            小程序用的是rpx;     rpx 就是响应式的    750rpx等于屏幕的宽度    在iphone6中 1px=0.5rpx
+   
+  3.在小程序中属性值也用mustache语法来充当变量    但是在Vue不可以使用
+   在小程序中标签名可能和HTML不一样   多选框就是直接checkbox 所以看文档
+   
+  4.自定义组件  创建组件 使用插槽
+    然后在使用组件的地方的JS文件中引入地址   
+    然后再页面中使用
+      
+
+uni-app框架总结：
+
+  1.uni-app
+   脚手架的搭建 
+   全局安装  npm install -g @vue-cli
+   创建项目  vue create -p dcloudio/uni-preset-vue my-project
+   启动项目(切换到my-project文件夹)  npm run dev:mp-weixin
+   然后在微信小程序开发者工具  导入项目 
+   注意如果出现app.json文件找不到   则在project.config.json 文件中添加 "miniprogramRoot": "./dist/dev/mp-weixin"
+   在Vue文件中写d+tab键会自动生成一些默认样式 
+   
+   下载sass版本  npm install node-sass@4.14.1 sass-loader@8.0.2   然后在相应的CSS样式style加入lang=“sass”
+             相当于less一样差不多
+
+  2.全局变量   
+    1.在main.js文件中 添加Vue的原型  然后在项目中使用  this.原型
+    2.在APP.vue文件中添加globalData属性设置参数   然后使用 用法 getApp().globalData.参数
+    3.vuex
+  
+  3.生命周期
+    在App.vue中  只是最常见的  其他的看文档
+   
+  4.插件 css tree  作用：选中HTML直接生成sass ctrl+shift+p   找到general css tree  会直接生成sass结构的样式表
+    shift+alt+F   代碼自动对齐
+    ctrl+K+S  一键保存
+  
+  5. 小程序是不支持通配符*   
+    uni-app 是支持promise  所以网络请求跨域用promise
+    小程序中tabbar组件是不在屏幕的高度范围内的  所以计算屏幕高度只需要100vh-navigate
+  
+  6.uni-ui框架的使用     https://www.npmjs.com/package/@dcloudio/uni-ui
+    npm install @dcloudio/uni-ui  
+    在组件中引入并使用 
+
+  7.
+    --推荐组件页面
+    moment插件的使用(根据从1970到现在的毫秒数转换 Date.now()可以获取时间戳)  npm install moment   具体看文档
+    然后导入    import moment from "moment"  然后在下一行写   moment.locale("zh-cn")  设置成中文的表示方法
+    例如  moment(时间).format("MM")
+
+   8.scroll-view组件的使用    注意的是要设置其容器的高度并且是计算属性的话calc(100vh - 36px)要留空格  不需要考虑tabbar   有时scroll-y要写true   
+ 
+   9.image有几个比较好用的属性 例如widthFix heightFix aspectFill
+
+   10.uni.setNavigationBarTitle({ title: "专辑" });  通过选择不同的子组件来改变标题  不然一般只有在pages文件中改
+
+
+   11.navigator相当于a标签   用与跳转页面  但只能跳转本地页面。目标页面必须在pages.json中注册  url路径可以 /代表根目录  
+        uni.navigateTo    这个API也是跳转的   只是是在js中使用  
+
+   12.
+      --专辑页面
+      `asdasd${变量}`  es6新增的语法  可以将变量和字符串拼接起来  但是有时在外面还要加双引号
+                      作用：用于URL传递变量参数
+
+   13.onload(option){}  这个变量里面有传过来的参数
+
+   14. --touch
+    手指按下和松开事件   touchstart  touchend   
+    获取按下或者松开的坐标     event.changedTouches[0].clientX/Y 
+
+
+   15. 上传图片或者音频  都是通过downLoadFile 下载到本地(小程序的内存) 然后返回一个临时路径 
+                  在通过专门的api(属性有设置其临时路径)下载到本地
+
+   16 引入iconfont方法      
+       下载代码   将.css文件后的文件全部复制   
+       然后在.css文件中修改路径    URL中 @/....
+       然后在app.vue的style引入    
+       要改变图标样式 在incofont.css中改变       
+
+   17在pages.json 中设置tabbar图片时  图片只能在static才能生效           
+
+   18 @小程序中封装了  表示src   在js中不用~ 其他css或HTML可加可不加 
+
+
+    网络接口描述       https://www.showdoc.com.cn/414855720281749/3678621017219602
+    真实接口 https://blog.csdn.net/weixin_51565477/article/details/109584802?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162683074116780357235724%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=162683074116780357235724&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-1-109584802.first_rank_v2_pc_rank_v29&utm_term=++http%3A%2F%2Fservice.picasso.adesk.com+%E4%B8%8D%E5%9C%A8%E4%BB%A5%E4%B8%8B+request+%E5%90%88%E6%B3%95%E5%9F%9F%E5%90%8D%E5%88%97%E8%A1%A8%E4%B8%AD%EF%BC%8C%29&spm=1018.2226.3001.4187
+
+    
+
+
+  
+       
+
+    
